@@ -33,21 +33,26 @@ def mkdir_p(path, dry_run=False):
     return True
 
 
-# FIXME: Support other URL types
-# FIXME: Support other authentication methods
-def clone_repo(repo, path, token=None, dry_run=False):
+# FIXME: Support other authentication methods (e.g. ssh key, user/pass)
+def git_credentials_callback(token=None):
+    credentials = pygit2.UserPass(token, "")
+    return pygit2.RemoteCallbacks(credentials=credentials)
+
+
+# FIXME: Support other URL types (e.g. ssh)
+def clone_repo(repo, path, git_callbacks=None, dry_run=False):
     path = clone_path(path, repo)
     if os.path.isdir(path):
         log.debug(f"Skipping existing repository: {path}")
     else:
         mkdir_p(path, dry_run=dry_run)
         url = repo.clone_url
-        credentials = pygit2.UserPass(token, "")
-        callbacks = pygit2.RemoteCallbacks(credentials=credentials)
         log.info(f"Cloning: {url} -> {path}")
         if not dry_run:
             try:
-                pygit2.clone_repository(url, path, callbacks=callbacks)
+                pygit2.clone_repository(url, path, callbacks=git_callbacks)
             except ValueError:
                 pass
     return path
+
+# FIXME: Implement git-pull

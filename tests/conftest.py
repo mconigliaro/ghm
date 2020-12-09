@@ -1,7 +1,8 @@
 import os
 import pytest
-
 from github.Repository import Repository
+
+import ghm
 
 
 @pytest.fixture
@@ -32,5 +33,6 @@ def ghm_repo():
 
 
 @pytest.fixture
-def token():
-    return os.environ.get("GH_TOKEN")
+def git_credentials():
+    token = os.environ.get("GH_TOKEN")
+    return ghm.git_credentials_callback(token=token)

@@ -1,16 +1,21 @@
 #!/usr/bin/env python
-from github import Github
-
 import ghm
 import ghm.options as options
+import github
 
 
 opts = options.parse()
 repos = ghm.filter_repos(
-    Github(opts.token).get_user().get_repos(),
+    github.Github(opts.token).get_user().get_repos(),
     owner_filter=opts.owner_filter,
     repo_filter=opts.repo_filter,
     ignore_forks=opts.ignore_forks
 )
+git_credentials = ghm.git_credentials_callback(token=opts.token)
 for repo in repos:
-    ghm.clone_repo(repo, opts.path, token=opts.token, dry_run=opts.dry_run)
+    ghm.clone_repo(
+        repo,
+        opts.path,
+        git_callbacks=git_credentials,
+        dry_run=opts.dry_run
+    )
