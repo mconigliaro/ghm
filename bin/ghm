@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+from github import Github
+
+import ghm
+import ghm.options as options
+
+
+opts = options.parse()
+repos = ghm.filter_repos(
+    Github(opts.token).get_user().get_repos(),
+    owner_filter=opts.owner_filter,
+    repo_filter=opts.repo_filter
+)
+for repo in repos:
+    ghm.clone_repo(repo, opts.path, token=opts.token, dry_run=opts.dry_run)
