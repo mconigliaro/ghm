@@ -15,6 +15,12 @@ def test_filter_repos_repo_filter(test_repos):
     assert names == ["qux", "quux"]
 
 
+def test_filter_repos_ignore_forks(test_repos):
+    repos = ghm.filter_repos(test_repos, ignore_forks=True)
+    names = [r.name for r in repos]
+    assert names == ['baz', 'qux', 'quux']
+
+
 def test_clone_path(tmp_path, ghm_repo):
     path = ghm.clone_path(tmp_path, ghm_repo)
     assert path == os.path.join(tmp_path, "mconigliaro", "ghm")

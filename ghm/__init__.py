@@ -8,12 +8,14 @@ import re
 log = logging.getLogger(__name__)
 
 
-# FIXME: Support ignoring forks
-def filter_repos(repos, owner_filter=None, repo_filter=None):
+def filter_repos(repos, owner_filter=None, repo_filter=None,
+                 ignore_forks=False):
     if owner_filter:
         repos = [r for r in repos if re.search(owner_filter, r.owner.login)]
     if repo_filter:
         repos = [r for r in repos if re.search(repo_filter, r.name)]
+    if ignore_forks:
+        repos = [r for r in repos if not r.fork]
     return repos
 
 

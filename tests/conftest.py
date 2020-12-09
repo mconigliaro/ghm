@@ -7,10 +7,10 @@ from github.Repository import Repository
 @pytest.fixture
 def test_repos():
     attrs = [
-        {"name": "baz", "owner": {"login": "foo"}},
-        {"name": "qux", "owner": {"login": "foo"}},
-        {"name": "quux", "owner": {"login": "bar"}},
-        {"name": "corge", "owner": {"login": "bar"}}
+        {"name": "baz", "owner": {"login": "foo"}, "fork": False},
+        {"name": "qux", "owner": {"login": "foo"}, "fork": False},
+        {"name": "quux", "owner": {"login": "bar"}, "fork": False},
+        {"name": "corge", "owner": {"login": "bar"}, "fork": True}
     ]
     return [Repository(None, None, a, None) for a in attrs]
 

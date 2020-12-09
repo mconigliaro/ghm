@@ -9,7 +9,8 @@ opts = options.parse()
 repos = ghm.filter_repos(
     Github(opts.token).get_user().get_repos(),
     owner_filter=opts.owner_filter,
-    repo_filter=opts.repo_filter
+    repo_filter=opts.repo_filter,
+    ignore_forks=opts.ignore_forks
 )
 for repo in repos:
     ghm.clone_repo(repo, opts.path, token=opts.token, dry_run=opts.dry_run)

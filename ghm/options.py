@@ -30,6 +30,11 @@ def parse():
         help="repo filter"
     )
     parser.add_argument(
+        "--ignore-forks",
+        action="store_true",
+        help="ignore forks"
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="version",
