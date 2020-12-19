@@ -23,13 +23,7 @@ def test_filter_repos_ignore_forks(test_repos):
 
 def test_clone_path(tmp_path, ghm_repo):
     path = ghm.clone_path(tmp_path, ghm_repo)
-    assert path == os.path.join(tmp_path, "mconigliaro", "ghm")
-
-
-def test_mkdir_p_dry_run(tmp_path):
-    path = os.path.join(tmp_path, "foo", "bar", "baz")
-    assert not ghm.mkdir_p(path, dry_run=True)
-    assert not os.path.exists(path)
+    assert path == os.path.join(tmp_path, "mconigliaro", "ghm.git")
 
 
 def test_mkdir_p(tmp_path):
@@ -45,9 +39,9 @@ def test_clone_repo_dry_run(ghm_repo, tmp_path, git_credentials):
         git_callbacks=git_credentials,
         dry_run=True
     )
-    assert not os.path.exists(os.path.join(path, ".git"))
+    assert not os.path.exists(os.path.join(path, "HEAD"))
 
 
 def test_clone_repo(ghm_repo, tmp_path, git_credentials):
     path = ghm.clone_repo(ghm_repo, tmp_path, git_callbacks=git_credentials)
-    assert os.path.exists(os.path.join(path, ".git"))
+    assert os.path.exists(os.path.join(path, "HEAD"))

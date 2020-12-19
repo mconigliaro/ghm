@@ -20,14 +20,11 @@ def filter_repos(repos, owner_filter=None, repo_filter=None,
 
 
 def clone_path(root, repo):
-    return os.path.join(root, repo.owner.login, repo.name)
+    return os.path.join(root, repo.owner.login, f"{repo.name}.git")
 
 
-def mkdir_p(path, dry_run=False):
+def mkdir_p(path):
     if os.path.exists(path):
-        return False
-    log.debug(f"Creating directory: {path}")
-    if dry_run:
         return False
     pathlib.Path(path).mkdir(parents=True)
     return True
@@ -39,20 +36,30 @@ def git_credentials_callback(token=None):
     return pygit2.RemoteCallbacks(credentials=credentials)
 
 
+def git_mirror_remote(repo, name, url):
+    remote = repo.remotes.create(name, url, "+refs/*:refs/*")
+    repo.config[f"remote.{name}.mirror"] = True
+    return remote
+
+
 # FIXME: Support other URL types (e.g. ssh)
 def clone_repo(repo, path, git_callbacks=None, dry_run=False):
     path = clone_path(path, repo)
-    if os.path.isdir(path):
-        log.debug(f"Skipping existing repository: {path}")
-    else:
-        mkdir_p(path, dry_run=dry_run)
+    if not os.path.isdir(path):
         url = repo.clone_url
         log.info(f"Cloning: {url} -> {path}")
         if not dry_run:
+            mkdir_p(path)
             try:
-                pygit2.clone_repository(url, path, callbacks=git_callbacks)
+                pygit2.clone_repository(
+                    url,
+                    path,
+                    callbacks=git_callbacks,
+                    bare=True,
+                    remote=git_mirror_remote
+                )
             except ValueError:
                 pass
     return path
 
-# FIXME: Implement git-pull
+# FIXME: Implement fetch
