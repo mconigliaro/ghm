@@ -33,15 +33,17 @@ def test_mkdir_p(tmp_path):
 
 
 def test_clone_repo_dry_run(ghm_repo, tmp_path, git_credentials):
-    path = ghm.clone_repo(
+    path = ghm.clone_path(tmp_path, ghm_repo)
+    clone_path = ghm.clone_repo(
         ghm_repo,
-        tmp_path,
+        path,
         git_callbacks=git_credentials,
         dry_run=True
     )
-    assert not os.path.exists(os.path.join(path, "HEAD"))
+    assert not os.path.exists(os.path.join(clone_path, "HEAD"))
 
 
 def test_clone_repo(ghm_repo, tmp_path, git_credentials):
-    path = ghm.clone_repo(ghm_repo, tmp_path, git_callbacks=git_credentials)
-    assert os.path.exists(os.path.join(path, "HEAD"))
+    path = ghm.clone_path(tmp_path, ghm_repo)
+    clone_path = ghm.clone_repo(ghm_repo, path, git_callbacks=git_credentials)
+    assert os.path.exists(os.path.join(clone_path, "HEAD"))

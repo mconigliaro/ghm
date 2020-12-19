@@ -13,9 +13,11 @@ repos = ghm.filter_repos(
 )
 git_credentials = ghm.git_credentials_callback(token=opts.token)
 for repo in repos:
+    path = ghm.clone_path(opts.path, repo)
     ghm.clone_repo(
         repo,
-        opts.path,
+        path,
         git_callbacks=git_credentials,
         dry_run=opts.dry_run
     )
+    ghm.fetch_repo(path, git_callbacks=git_credentials, dry_run=opts.dry_run)

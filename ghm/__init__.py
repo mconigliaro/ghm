@@ -44,7 +44,6 @@ def git_mirror_remote(repo, name, url):
 
 # FIXME: Support other URL types (e.g. ssh)
 def clone_repo(repo, path, git_callbacks=None, dry_run=False):
-    path = clone_path(path, repo)
     if not os.path.isdir(path):
         url = repo.clone_url
         log.info(f"Cloning: {url} -> {path}")
@@ -62,4 +61,12 @@ def clone_repo(repo, path, git_callbacks=None, dry_run=False):
                 pass
     return path
 
-# FIXME: Implement fetch
+
+# FIXME: Needs tests
+def fetch_repo(path, git_callbacks=None, dry_run=False):
+    if os.path.isdir(path):
+        repo = pygit2.Repository(path)
+        remote = repo.remotes["origin"]
+        log.info(f"Fetching: {remote.url} -> {path}")
+        if not dry_run:
+            remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)
