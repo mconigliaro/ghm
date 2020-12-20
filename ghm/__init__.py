@@ -53,20 +53,15 @@ def clone_repo(repo, path, git_callbacks=None, dry_run=False):
         return False
 
     mkdir_p(path)
-    try:
-        pygit2.clone_repository(
-            url,
-            path,
-            callbacks=git_callbacks,
-            bare=True,
-            remote=git_mirror_remote
-        )
-    except ValueError:
-        pass
-    return True
+    return pygit2.clone_repository(
+        url,
+        path,
+        callbacks=git_callbacks,
+        bare=True,
+        remote=git_mirror_remote
+    )
 
 
-# FIXME: Needs tests
 def fetch_repo(path, git_callbacks=None, dry_run=False):
     repo = pygit2.Repository(path)
     remote = repo.remotes["origin"]
@@ -74,5 +69,4 @@ def fetch_repo(path, git_callbacks=None, dry_run=False):
     if dry_run:
         return False
 
-    remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)
-    return True
+    return remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)

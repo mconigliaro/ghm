@@ -16,7 +16,7 @@ def test_repos():
     return [Repository(None, None, a, None) for a in attrs]
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def ghm_repo():
     return Repository(
         None,
@@ -30,6 +30,11 @@ def ghm_repo():
         },
         None
     )
+
+
+@pytest.fixture(scope='session')
+def ghm_clone_path(tmp_path_factory, ghm_repo):
+    return ghm.clone_path(tmp_path_factory.getbasetemp(), ghm_repo)
 
 
 @pytest.fixture
