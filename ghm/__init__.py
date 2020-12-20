@@ -44,29 +44,35 @@ def git_mirror_remote(repo, name, url):
 
 # FIXME: Support other URL types (e.g. ssh)
 def clone_repo(repo, path, git_callbacks=None, dry_run=False):
-    if not os.path.isdir(path):
-        url = repo.clone_url
-        log.info(f"Cloning: {url} -> {path}")
-        if not dry_run:
-            mkdir_p(path)
-            try:
-                pygit2.clone_repository(
-                    url,
-                    path,
-                    callbacks=git_callbacks,
-                    bare=True,
-                    remote=git_mirror_remote
-                )
-            except ValueError:
-                pass
-    return path
+    if os.path.isdir(path):
+        return False
+
+    url = repo.clone_url
+    log.info(f"Cloning: {url} -> {path}")
+    if dry_run:
+        return False
+
+    mkdir_p(path)
+    try:
+        pygit2.clone_repository(
+            url,
+            path,
+            callbacks=git_callbacks,
+            bare=True,
+            remote=git_mirror_remote
+        )
+    except ValueError:
+        pass
+    return True
 
 
 # FIXME: Needs tests
 def fetch_repo(path, git_callbacks=None, dry_run=False):
-    if os.path.isdir(path):
-        repo = pygit2.Repository(path)
-        remote = repo.remotes["origin"]
-        log.info(f"Fetching: {remote.url} -> {path}")
-        if not dry_run:
-            remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)
+    repo = pygit2.Repository(path)
+    remote = repo.remotes["origin"]
+    log.info(f"Fetching: {remote.url} -> {path}")
+    if dry_run:
+        return False
+
+    remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)
+    return True
