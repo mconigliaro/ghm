@@ -8,12 +8,11 @@ import re
 log = logging.getLogger(__name__)
 
 
-def filter_repos(repos, owner_filter=None, repo_filter=None,
-                 ignore_forks=False):
-    if owner_filter:
-        repos = [r for r in repos if re.search(owner_filter, r.owner.login)]
-    if repo_filter:
-        repos = [r for r in repos if re.search(repo_filter, r.name)]
+def filter_repos(repos, owner=None, repo=None, ignore_forks=False):
+    if owner:
+        repos = [r for r in repos if re.search(owner, r.owner.login)]
+    if repo:
+        repos = [r for r in repos if re.search(repo, r.name)]
     if ignore_forks:
         repos = [r for r in repos if not r.fork]
     return repos
@@ -63,6 +62,9 @@ def clone_repo(repo, path, git_callbacks=None, dry_run=False):
 
 
 def fetch_repo(path, git_callbacks=None, dry_run=False):
+    if not os.path.isdir(path):
+        return False
+
     repo = pygit2.Repository(path)
     remote = repo.remotes["origin"]
     log.info(f"Fetching: {remote.url} -> {path}")

@@ -7,8 +7,8 @@ import github
 opts = options.parse()
 repos = ghm.filter_repos(
     github.Github(opts.token).get_user().get_repos(),
-    owner_filter=opts.owner_filter,
-    repo_filter=opts.repo_filter,
+    owner=opts.owner,
+    repo=opts.repo,
     ignore_forks=opts.ignore_forks
 )
 git_credentials = ghm.git_credentials_callback(token=opts.token)

@@ -14,6 +14,12 @@ def parse():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"{meta.NAME} {meta.VERSION}"
+    )
+    parser.add_argument(
         "-t",
         "--token",
         default=os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN")),
@@ -21,24 +27,18 @@ def parse():
     )
     parser.add_argument(
         "-o",
-        "--owner-filter",
+        "--owner",
         help="owner filter"
     )
     parser.add_argument(
         "-r",
-        "--repo-filter",
+        "--repo",
         help="repo filter"
     )
     parser.add_argument(
         "--ignore-forks",
         action="store_true",
         help="ignore forks"
-    )
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        version=f"{meta.NAME} {meta.VERSION}"
     )
     parser.add_argument(
         "--dry-run",

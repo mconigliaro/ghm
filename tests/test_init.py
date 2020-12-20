@@ -4,14 +4,14 @@ import pygit2
 import ghm
 
 
-def test_filter_repos_owner_filter(test_repos):
-    repos = ghm.filter_repos(test_repos, owner_filter="foo")
+def test_filter_repos_owner(test_repos):
+    repos = ghm.filter_repos(test_repos, owner="foo")
     names = [r.name for r in repos]
     assert names == ["baz", "qux"]
 
 
-def test_filter_repos_repo_filter(test_repos):
-    repos = ghm.filter_repos(test_repos, repo_filter="u")
+def test_filter_repos_repo(test_repos):
+    repos = ghm.filter_repos(test_repos, repo="u")
     names = [r.name for r in repos]
     assert names == ["qux", "quux"]
 
