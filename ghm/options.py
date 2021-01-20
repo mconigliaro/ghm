@@ -26,19 +26,25 @@ def parse():
         help="github access token"
     )
     parser.add_argument(
-        "-o",
         "--owner",
         help="owner filter"
     )
     parser.add_argument(
-        "-r",
         "--repo",
         help="repo filter"
     )
     parser.add_argument(
-        "--ignore-forks",
+        "--exclude-owner",
+        help="exclude owner filter"
+    )
+    parser.add_argument(
+        "--exclude-repo",
+        help="exclude repo filter"
+    )
+    parser.add_argument(
+        "--exclude-forks",
         action="store_true",
-        help="ignore forks"
+        help="exclude forks"
     )
     parser.add_argument(
         "--dry-run",

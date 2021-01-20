@@ -8,12 +8,18 @@ import re
 log = logging.getLogger(__name__)
 
 
-def filter_repos(repos, owner=None, repo=None, ignore_forks=False):
+def filter_repos(repos, owner=None, repo=None, exclude_owner=None,
+                 exclude_repo=None, exclude_forks=False):
     if owner:
         repos = [r for r in repos if re.search(owner, r.owner.login)]
     if repo:
         repos = [r for r in repos if re.search(repo, r.name)]
-    if ignore_forks:
+    if exclude_owner:
+        repos = [r for r in repos
+                 if not re.search(exclude_owner, r.owner.login)]
+    if exclude_repo:
+        repos = [r for r in repos if not re.search(exclude_repo, r.name)]
+    if exclude_forks:
         repos = [r for r in repos if not r.fork]
     return repos
 

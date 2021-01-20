@@ -16,8 +16,20 @@ def test_filter_repos_repo(test_repos):
     assert names == ["qux", "quux"]
 
 
-def test_filter_repos_ignore_forks(test_repos):
-    repos = ghm.filter_repos(test_repos, ignore_forks=True)
+def test_filter_repos_exclude_owner(test_repos):
+    repos = ghm.filter_repos(test_repos, exclude_owner="foo")
+    names = [r.name for r in repos]
+    assert names == ['quux', 'corge']
+
+
+def test_filter_repos_exclude_repo(test_repos):
+    repos = ghm.filter_repos(test_repos, exclude_repo="u")
+    names = [r.name for r in repos]
+    assert names == ['baz', 'corge']
+
+
+def test_filter_repos_exclude_forks(test_repos):
+    repos = ghm.filter_repos(test_repos, exclude_forks=True)
     names = [r.name for r in repos]
     assert names == ['baz', 'qux', 'quux']
 

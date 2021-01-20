@@ -9,7 +9,9 @@ repos = ghm.filter_repos(
     github.Github(opts.token).get_user().get_repos(),
     owner=opts.owner,
     repo=opts.repo,
-    ignore_forks=opts.ignore_forks
+    exclude_owner=opts.exclude_owner,
+    exclude_repo=opts.exclude_repo,
+    exclude_forks=opts.exclude_forks
 )
 git_credentials = ghm.git_credentials_callback(token=opts.token)
 for repo in repos:
