@@ -8,12 +8,25 @@ import ghm
 @pytest.fixture
 def test_repos():
     attrs = [
-        {"name": "baz", "owner": {"login": "foo"}, "fork": False},
-        {"name": "qux", "owner": {"login": "foo"}, "fork": False},
-        {"name": "quux", "owner": {"login": "bar"}, "fork": False},
-        {"name": "corge", "owner": {"login": "bar"}, "fork": True}
+        {"owner": "foo", "name": "baz", "fork": False},
+        {"owner": "foo", "name": "qux", "fork": False},
+        {"owner": "bar", "name": "quux", "fork": False},
+        {"owner": "bar", "name": "corge", "fork": True},
     ]
-    return [Repository(None, None, a, None) for a in attrs]
+
+    return [
+        Repository(
+            None,
+            None,
+            {
+                "full_name": f"{a['owner']}/{a['name']}",
+                "owner": {"login": a["owner"]},
+                "name": a["name"],
+                "fork": a["fork"]
+            },
+            None)
+        for a in attrs
+    ]
 
 
 @pytest.fixture(scope='session')
