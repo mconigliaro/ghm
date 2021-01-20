@@ -48,12 +48,12 @@ def git_mirror_remote(repo, name, url):
 
 
 # FIXME: Support other URL types (e.g. ssh)
-def clone_repo(repo, path, git_callbacks=None, dry_run=False):
-    if os.path.isdir(path):
+def clone_repo(repo, path, callbacks=None, dry_run=False):
+    if os.path.isdir(path) and os.listdir(path):
         return False
 
     url = repo.clone_url
-    log.info(f"Cloning: {url} -> {path}")
+    log.info(f"Clone: {url} -> {path}")
     if dry_run:
         return False
 
@@ -61,20 +61,23 @@ def clone_repo(repo, path, git_callbacks=None, dry_run=False):
     return pygit2.clone_repository(
         url,
         path,
-        callbacks=git_callbacks,
+        callbacks=callbacks,
         bare=True,
         remote=git_mirror_remote
     )
 
 
-def fetch_repo(path, git_callbacks=None, dry_run=False):
+def fetch_repo(path, callbacks=None, dry_run=False):
     if not os.path.isdir(path):
         return False
 
     repo = pygit2.Repository(path)
     remote = repo.remotes["origin"]
-    log.info(f"Fetching: {remote.url} -> {path}")
+    log.info(f"Fetch: {remote.url} -> {path}")
     if dry_run:
         return False
 
-    return remote.fetch(callbacks=git_callbacks, prune=pygit2.GIT_FETCH_PRUNE)
+    tp = remote.fetch(callbacks=callbacks, prune=pygit2.GIT_FETCH_PRUNE)
+    log.info(f"Total {tp.total_objects} (delta {tp.total_deltas})")
+
+    return tp

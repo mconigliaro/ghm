@@ -49,7 +49,7 @@ def test_clone_repo_dry_run(ghm_repo, ghm_clone_path, git_credentials):
     assert not ghm.clone_repo(
         ghm_repo,
         ghm_clone_path,
-        git_callbacks=git_credentials,
+        callbacks=git_credentials,
         dry_run=True
     )
     assert not os.path.exists(ghm_clone_path)
@@ -59,7 +59,7 @@ def test_clone_repo(ghm_repo, ghm_clone_path, git_credentials):
     repo = ghm.clone_repo(
         ghm_repo,
         ghm_clone_path,
-        git_callbacks=git_credentials
+        callbacks=git_credentials
     )
     assert repo.is_bare
 
@@ -67,11 +67,11 @@ def test_clone_repo(ghm_repo, ghm_clone_path, git_credentials):
 def test_fetch_repo_dry_run(ghm_clone_path, git_credentials):
     assert not ghm.fetch_repo(
         ghm_clone_path,
-        git_callbacks=git_credentials,
+        callbacks=git_credentials,
         dry_run=True
     )
 
 
 def test_fetch_repo(ghm_clone_path, git_credentials):
-    tp = ghm.fetch_repo(ghm_clone_path, git_callbacks=git_credentials)
+    tp = ghm.fetch_repo(ghm_clone_path, callbacks=git_credentials)
     assert isinstance(tp, pygit2.remote.TransferProgress)
