@@ -83,7 +83,19 @@ def fetch_repo(path, callbacks=None, dry_run=False):
     if dry_run:
         return False
 
-    tp = remote.fetch(callbacks=callbacks, prune=pygit2.GIT_FETCH_PRUNE)
-    log.info(f"Total {tp.total_objects} (delta {tp.total_deltas})")
+    return remote.fetch(callbacks=callbacks, prune=pygit2.GIT_FETCH_PRUNE)
 
-    return tp
+
+def mirror_repo(repo, path, callbacks=None, dry_run=False):
+    cloned = clone_repo(
+        repo,
+        path,
+        callbacks=callbacks,
+        dry_run=dry_run
+    )
+    if not cloned:
+        fetch_repo(
+            path,
+            callbacks=callbacks,
+            dry_run=dry_run
+        )
