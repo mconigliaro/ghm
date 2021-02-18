@@ -41,7 +41,7 @@ def mkdir_p(path):
     return True
 
 
-# FIXME: Support other authentication methods (e.g. ssh key, user/pass)
+# FIXME: Support SSH authentication
 def git_credentials_callback(token=None):
     credentials = pygit2.UserPass(token, "")
     return pygit2.RemoteCallbacks(credentials=credentials)
@@ -53,7 +53,7 @@ def git_mirror_remote(repo, name, url):
     return remote
 
 
-# FIXME: Support other URL types (e.g. ssh)
+# FIXME: Support SSH URLs
 def clone_repo(repo, path, callbacks=None, dry_run=False):
     if os.path.isdir(path) and os.listdir(path):
         return False
