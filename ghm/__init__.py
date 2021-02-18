@@ -84,18 +84,3 @@ def fetch_repo(path, callbacks=None, dry_run=False):
         return False
 
     return remote.fetch(callbacks=callbacks, prune=pygit2.GIT_FETCH_PRUNE)
-
-
-def mirror_repo(repo, path, callbacks=None, dry_run=False):
-    cloned = clone_repo(
-        repo,
-        path,
-        callbacks=callbacks,
-        dry_run=dry_run
-    )
-    if not cloned:
-        fetch_repo(
-            path,
-            callbacks=callbacks,
-            dry_run=dry_run
-        )

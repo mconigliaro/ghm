@@ -47,6 +47,11 @@ def parse():
         help="exclude forks"
     )
     parser.add_argument(
+        "--threads",
+        default=os.cpu_count(),
+        help="number of threads to run"
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="show what will happen without making changes"
