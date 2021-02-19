@@ -1,29 +1,18 @@
 #!/usr/bin/env python
+
 import ghm
 import ghm.options as options
-import github
 import threading
 import queue
 
 
 opts = options.parse()
 
-if opts.token:
-    gh = github.Github(opts.token)
-else:
-    gh = github.Github()
-
-if opts.user:
-    all_repos = gh.get_user(opts.user).get_repos()
-elif opts.org:
-    all_repos = gh.get_organization(opts.org).get_repos()
-else:
-    all_repos = gh.get_user().get_repos()
-
+all_repos = ghm.discover_repos(opts.token, opts.user, opts.org)
 repos = ghm.filter_repos(
     all_repos,
-    owner=opts.owner,
-    repo=opts.repo,
+    match_owner=opts.match_owner,
+    match_repo=opts.match_repo,
     exclude_owner=opts.exclude_owner,
     exclude_repo=opts.exclude_repo,
     exclude_forks=opts.exclude_forks
@@ -55,7 +44,7 @@ def worker():
         q.task_done()
 
 
-for i in range(opts.threads):
+for i in range(opts.workers):
     threading.Thread(target=worker, daemon=True).start()
 
 q.join()

@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 
+import ghm
 import ghm.meta as meta
 
 
@@ -9,9 +10,11 @@ def parse():
     parser = argparse.ArgumentParser(
         prog=meta.NAME,
         description=meta.DESCRIPTION,
-        epilog=f"{meta.COPYRIGHT} ({meta.URL})",
-        # FIXME: https://bugs.python.org/issue27927
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        epilog=f"{meta.COPYRIGHT} ({meta.URL})"
+    )
+    parser.add_argument(
+        "path",
+        help="path for local mirrors"
     )
     parser.add_argument(
         "-v",
@@ -19,61 +22,73 @@ def parse():
         action="version",
         version=f"{meta.NAME} {meta.VERSION}"
     )
-    parser.add_argument(
+
+    auth_group = parser.add_argument_group('authentication')
+    default_token = ghm.discover_token()
+    token_env = f"(default: ${default_token.env})" if default_token.env else ""
+    auth_group.add_argument(
         "-t",
         "--token",
-        default=os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN")),
-        help="github access token"
+        default=default_token.val,
+        help=f"github access token {token_env}"
     )
-    parser.add_argument(
+
+    discovery_group = parser.add_argument_group('repository discovery')
+    discovery_group.add_argument(
         "-u",
         "--user",
-        help="mirror a specific user's repositories"
+        help="discover repositories by username"
     )
-    parser.add_argument(
+    discovery_group.add_argument(
         "-o",
         "--org",
-        help="mirror a specific organization's repositories"
+        help="discover repositories by organization"
     )
-    parser.add_argument(
-        "--owner",
-        help="filter repositories by owner"
+
+    filter_group = parser.add_argument_group('repository regexp filtering')
+    filter_group.add_argument(
+        "--match-owner",
+        help="include repositories by owner"
     )
-    parser.add_argument(
-        "--repo",
-        help="filter repositories by name"
+    filter_group.add_argument(
+        "--match-repo",
+        help="include repositories by name"
     )
-    parser.add_argument(
-        "--exclude-owner"
+    filter_group.add_argument(
+        "--exclude-owner",
+        help="exclude repositories by owner"
     )
-    parser.add_argument(
-        "--exclude-repo"
+    filter_group.add_argument(
+        "--exclude-repo",
+        help="exclude repositories by name"
     )
-    parser.add_argument(
+    filter_group.add_argument(
         "--exclude-forks",
         action="store_true",
         help="exclude forks"
     )
-    parser.add_argument(
-        "--threads",
-        default=os.cpu_count(),
-        help="number of threads to run"
+
+    perf_group = parser.add_argument_group('performance')
+    default_workers = os.cpu_count()
+    perf_group.add_argument(
+        "--workers",
+        default=default_workers,
+        help=f"number of mirror workers to run (default: {default_workers})"
     )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="show what will happen without making changes"
-    )
-    parser.add_argument(
+
+    debug_group = parser.add_argument_group('debugging')
+    default_log = "info"
+    debug_group.add_argument(
         "-l",
         "--log-level",
         choices=("debug", "info", "warning", "error", "critical"),
-        default="info",
-        help="show messages of this level or higher"
+        default=default_log,
+        help=f"show messages of this level or higher (default: {default_log})"
     )
-    parser.add_argument(
-        "path",
-        help="local path"
+    debug_group.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="show what will happen without making changes"
     )
 
     options = parser.parse_args()

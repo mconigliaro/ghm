@@ -1,4 +1,3 @@
-import os
 import pytest
 from github.Repository import Repository
 
@@ -52,5 +51,5 @@ def ghm_clone_path(tmp_path_factory, ghm_repo):
 
 @pytest.fixture
 def git_credentials():
-    token = os.environ.get("GH_TOKEN")
-    return ghm.git_credentials_callback(token=token)
+    token = ghm.discover_token()
+    return ghm.git_credentials_callback(token=token.val)
