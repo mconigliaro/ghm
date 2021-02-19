@@ -47,9 +47,3 @@ def ghm_repo():
 @pytest.fixture(scope='session')
 def ghm_clone_path(tmp_path_factory, ghm_repo):
     return ghm.clone_path(tmp_path_factory.getbasetemp(), ghm_repo)
-
-
-@pytest.fixture
-def git_credentials():
-    token = ghm.discover_token()
-    return ghm.git_credentials_callback(token=token.val)
