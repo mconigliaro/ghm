@@ -39,6 +39,8 @@ def discover_repos(token, user, org):
 
 def filter_repos(repos, match_owner=None, match_repo=None, exclude_owner=None,
                  exclude_repo=None, exclude_forks=False):
+    all_repos = set(r.full_name for r in repos)
+
     if match_owner:
         repos = [r for r in repos if re.search(match_owner, r.owner.login)]
     if match_repo:
@@ -51,7 +53,6 @@ def filter_repos(repos, match_owner=None, match_repo=None, exclude_owner=None,
     if exclude_forks:
         repos = [r for r in repos if not r.fork]
 
-    all_repos = set(r.full_name for r in repos)
     selected_repos = set(n.full_name for n in repos)
     excluded_repos = sorted(all_repos - selected_repos)
     log.debug(
