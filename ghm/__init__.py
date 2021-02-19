@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 def filter_repos(repos, owner=None, repo=None, exclude_owner=None,
                  exclude_repo=None, exclude_forks=False):
     all_repos = set(r.full_name for r in repos)
+    log.debug(f"All repositories: {', '.join(all_repos)}")
 
     if owner:
         repos = [r for r in repos if re.search(owner, r.owner.login)]
@@ -24,8 +25,10 @@ def filter_repos(repos, owner=None, repo=None, exclude_owner=None,
     if exclude_forks:
         repos = [r for r in repos if not r.fork]
 
-    excluded_repos = sorted(all_repos - set(n.full_name for n in repos))
+    selected_repos = set(n.full_name for n in repos)
+    excluded_repos = sorted(all_repos - selected_repos)
     log.debug(f"Excluded repositories: {', '.join(excluded_repos)}")
+    log.debug(f"Selected repositories: {', '.join(selected_repos)}")
 
     return repos
 

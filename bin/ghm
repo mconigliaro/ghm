@@ -7,14 +7,28 @@ import queue
 
 
 opts = options.parse()
+
+if opts.token:
+    gh = github.Github(opts.token)
+else:
+    gh = github.Github()
+
+if opts.user:
+    all_repos = gh.get_user(opts.user).get_repos()
+elif opts.org:
+    all_repos = gh.get_organization(opts.org).get_repos()
+else:
+    all_repos = gh.get_user().get_repos()
+
 repos = ghm.filter_repos(
-    github.Github(opts.token).get_user().get_repos(),
+    all_repos,
     owner=opts.owner,
     repo=opts.repo,
     exclude_owner=opts.exclude_owner,
     exclude_repo=opts.exclude_repo,
     exclude_forks=opts.exclude_forks
 )
+
 git_credentials = ghm.git_credentials_callback(token=opts.token)
 
 q = queue.Queue()

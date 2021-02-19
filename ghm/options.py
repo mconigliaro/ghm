@@ -26,20 +26,28 @@ def parse():
         help="github access token"
     )
     parser.add_argument(
+        "-u",
+        "--user",
+        help="mirror a specific user's repositories"
+    )
+    parser.add_argument(
+        "-o",
+        "--org",
+        help="mirror a specific organization's repositories"
+    )
+    parser.add_argument(
         "--owner",
-        help="owner filter"
+        help="filter repositories by owner"
     )
     parser.add_argument(
         "--repo",
-        help="repo filter"
+        help="filter repositories by name"
     )
     parser.add_argument(
-        "--exclude-owner",
-        help="exclude owner filter"
+        "--exclude-owner"
     )
     parser.add_argument(
-        "--exclude-repo",
-        help="exclude repo filter"
+        "--exclude-repo"
     )
     parser.add_argument(
         "--exclude-forks",
