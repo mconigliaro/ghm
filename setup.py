@@ -31,6 +31,7 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     install_requires=[
+        "pygit2 >=1.4, <2.0",
         "PyGithub >=1.5.3, <2.0"
     ],
 )
