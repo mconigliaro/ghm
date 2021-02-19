@@ -1,6 +1,8 @@
 # Github Mirrorer
 
-Bulk mirror GitHub repositories
+[![ghm](https://circleci.com/gh/mconigliaro/ghm.svg?style=svg)](https://circleci.com/gh/mconigliaro/ghm)
+
+Simple command-line utility for bulk mirroring GitHub repositories
 
 ## Installation
 
