@@ -1,6 +1,6 @@
 # Github Mirrorer
 
-Easily mirror GitHub repositories
+Bulk mirror GitHub repositories
 
 ## Installation
 

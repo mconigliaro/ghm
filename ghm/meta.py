@@ -1,5 +1,5 @@
 NAME = __package__
-DESCRIPTION = "GitHub Mirrorer - Easily mirror GitHub repositories"
+DESCRIPTION = "GitHub Mirrorer - Bulk mirror GitHub repositories"
 VERSION = "0.1.0"
 AUTHOR = "Mike Conigliaro"
 URL = "http://conigliaro.org"
