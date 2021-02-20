@@ -1,6 +1,6 @@
 NAME = __package__
 DESCRIPTION = "GitHub Mirrorer - Bulk mirror GitHub repositories"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 AUTHOR = "Mike Conigliaro"
 URL = "http://conigliaro.org"
 EMAIL = "mike@conigliaro.org"
