@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+from urllib.parse import urlparse
 
 import ghm
 import ghm.meta as meta
@@ -93,6 +94,11 @@ def parse():
 
     options = parser.parse_args()
 
+    token_url = urlparse(options.token)
+    if token_url.scheme == "file":
+        with open(token_url.path, 'r') as f:
+            options.token = f.read().strip()
+
     if options.dry_run:
         log_format = "[%(levelname)s] (DRY-RUN) %(message)s"
     else:
@@ -100,5 +106,12 @@ def parse():
 
     log_level = getattr(logging, options.log_level.upper())
     logging.basicConfig(format=log_format, level=log_level)
+
+    options_list = []
+    for k, v in sorted(vars(options).items()):
+        if v and k in ["token"]:
+            v = "<redacted>"
+        options_list.append(f"{k}={repr(v)}")
+    logging.debug(f"Options: {', '.join(options_list)}")
 
     return options
