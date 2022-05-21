@@ -1,4 +1,6 @@
 release:
 	git tag "$(shell poetry version --short)"
 	git push --tags
-	poetry publish
+	poetry build
+	poetry config repositories.testpypi https://test.pypi.org/legacy/
+	poetry publish #-r testpypi -v
