@@ -1,6 +1,6 @@
 # Github Mirrorer
 
-[![ghm](https://circleci.com/gh/mconigliaro/ghm.svg?style=svg)](https://circleci.com/gh/mconigliaro/ghm)
+[![Continuous Integration](https://github.com/mconigliaro/ghm/actions/workflows/ci.yml/badge.svg)](https://github.com/mconigliaro/ghm/actions/workflows/ci.yml)
 
 Simple command-line utility for bulk mirroring GitHub repositories
 
