@@ -32,19 +32,19 @@ def test_filter_repos_repo(test_repos):
 def test_filter_repos_exclude_owner(test_repos):
     repos = ghm.filter_repos(test_repos, exclude_owner="foo")
     names = [r.name for r in repos]
-    assert names == ['quux', 'corge']
+    assert names == ["quux", "corge"]
 
 
 def test_filter_repos_exclude_repo(test_repos):
     repos = ghm.filter_repos(test_repos, exclude_repo="u")
     names = [r.name for r in repos]
-    assert names == ['baz', 'corge']
+    assert names == ["baz", "corge"]
 
 
 def test_filter_repos_exclude_forks(test_repos):
     repos = ghm.filter_repos(test_repos, exclude_forks=True)
     names = [r.name for r in repos]
-    assert names == ['baz', 'qux', 'quux']
+    assert names == ["baz", "qux", "quux"]
 
 
 def test_clone_path(tmp_path, ghm_repo):
@@ -59,27 +59,17 @@ def test_mkdir_p(tmp_path):
 
 
 def test_clone_repo_dry_run(ghm_repo, ghm_clone_path):
-    assert not ghm.clone_repo(
-        ghm_repo,
-        ghm_clone_path,
-        dry_run=True
-    )
+    assert not ghm.clone_repo(ghm_repo, ghm_clone_path, dry_run=True)
     assert not os.path.exists(ghm_clone_path)
 
 
 def test_clone_repo(ghm_repo, ghm_clone_path):
-    repo = ghm.clone_repo(
-        ghm_repo,
-        ghm_clone_path
-    )
+    repo = ghm.clone_repo(ghm_repo, ghm_clone_path)
     assert repo.is_bare
 
 
 def test_fetch_repo_dry_run(ghm_clone_path):
-    assert not ghm.fetch_repo(
-        ghm_clone_path,
-        dry_run=True
-    )
+    assert not ghm.fetch_repo(ghm_clone_path, dry_run=True)
 
 
 def test_fetch_repo(ghm_clone_path):
