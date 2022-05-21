@@ -21,29 +21,28 @@ def test_repos():
                 "full_name": f"{a['owner']}/{a['name']}",
                 "owner": {"login": a["owner"]},
                 "name": a["name"],
-                "fork": a["fork"]
+                "fork": a["fork"],
             },
-            None)
+            None,
+        )
         for a in attrs
     ]
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def ghm_repo():
     return Repository(
         None,
         None,
         {
             "name": "ghm",
-            "owner": {
-                "login": "mconigliaro"
-            },
-            "clone_url": "https://github.com/mconigliaro/ghm.git"
+            "owner": {"login": "mconigliaro"},
+            "clone_url": "https://github.com/mconigliaro/ghm.git",
         },
-        None
+        None,
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def ghm_clone_path(tmp_path_factory, ghm_repo):
     return ghm.clone_path(tmp_path_factory.getbasetemp(), ghm_repo)
