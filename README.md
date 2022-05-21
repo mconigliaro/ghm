@@ -18,9 +18,8 @@ Use `--help` to see available options.
 
 ### Getting Started
 
-    pip install pipenv
-    pipenv install --dev
-    pipenv shell
+    poetry install
+    poetry shell
     ...
 
 ### Running Tests
@@ -29,6 +28,6 @@ Use `--help` to see available options.
 
 ### Releases
 
-1. Bump `VERSION` in [ghm/meta.py](ghm/meta.py)
+1. Bump `version` in [pyproject.toml](pyproject.toml)
 1. Update [CHANGELOG.md](CHANGELOG.md)
 1. Run `make release`
