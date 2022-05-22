@@ -1,13 +1,14 @@
 from collections import namedtuple
-import github
-import github.PaginatedList
-import github.Repository
 import logging
 import os
 import pathlib
-import pygit2
 import re
 from typing import Callable, Iterable, Union
+
+import github
+import github.PaginatedList
+import github.Repository
+import pygit2
 
 
 log = logging.getLogger(__name__)
