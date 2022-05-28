@@ -4,6 +4,14 @@
 
 Simple command-line utility for bulk mirroring GitHub repositories
 
+## Features
+
+- Discover repositories by username or organization
+- Use regular expressions to filter by repository name or owner
+- Exclude forks
+- Mirror several repositories in parallel
+- Dry-run mode (shows what will happen without mirroring anything)
+
 ## Installation
 
     pip install ghm
