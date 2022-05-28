@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 Token = namedtuple("Token", "env, val")
 
 
-def discover_token(envs: list[str] = ["GITHUB_TOKEN"]) -> Token:
+def discover_token(envs: Iterable[str] = ["GITHUB_TOKEN"]) -> Token:
     for env in envs:
         val = os.environ.get(env)
         if val:
